@@ -393,7 +393,7 @@ export default function QueryWorkbench({
     persistHistory(next);
   };
 
- const runRawQuery = async () => {
+  const runRawQuery = async () => {
     if (!supportsRaw) {
       throw new Error("Raw query is not supported by this driver.");
     }
@@ -415,7 +415,7 @@ export default function QueryWorkbench({
       throw new Error(payload.error || "Query execution failed.");
     }
 
-   addHistory("raw", query);
+    addHistory("raw", query);
     const executionTimeMs = Math.round(performance.now() - startTime);
     setTelemetry({ executionTimeMs, affectedRows: payload.data?.length ?? 0 });
     return payload.data as Record<string, unknown>[];
@@ -471,9 +471,14 @@ export default function QueryWorkbench({
           body: JSON.stringify({ query }),
         });
         const payload = await res.json();
-      if (!res.ok) throw new Error(payload.error || "Query failed");
+        if (!res.ok) throw new Error(payload.error || "Query failed");
         const executionTimeMs = Math.round(performance.now() - startTime);
-        setTelemetry(payload.telemetry ?? { executionTimeMs, affectedRows: payload.data?.length ?? 0 });
+        setTelemetry(
+          payload.telemetry ?? {
+            executionTimeMs,
+            affectedRows: payload.data?.length ?? 0,
+          },
+        );
         rows = payload.data;
         addHistory("raw", query);
       }
@@ -673,23 +678,23 @@ export default function QueryWorkbench({
           </div>
         )}
 
-        {supportsStructured && queryMode === 'aggregation' && (
-           <div className="query-group">
-              <label htmlFor="query-pipeline">Pipeline (JSON Array)</label>
-              <textarea
-                id="query-pipeline"
-                className="query-textarea query-textarea-lg"
-                value={pipelineText}
-                onChange={(event) => setPipelineText(event.target.value)}
-                onKeyDown={(e) => {
-                  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                    e.preventDefault();
-                    runQuery();
-                  }
-                }}
-                spellCheck={false}
-              />
-           </div>
+        {supportsStructured && queryMode === "aggregation" && (
+          <div className="query-group">
+            <label htmlFor="query-pipeline">Pipeline (JSON Array)</label>
+            <textarea
+              id="query-pipeline"
+              className="query-textarea query-textarea-lg"
+              value={pipelineText}
+              onChange={(event) => setPipelineText(event.target.value)}
+              onKeyDown={(e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+                  e.preventDefault();
+                  runQuery();
+                }
+              }}
+              spellCheck={false}
+            />
+          </div>
         )}
 
         {supportsStructured && queryMode === "structured" && (
@@ -754,7 +759,7 @@ export default function QueryWorkbench({
               value={rawQuery}
               onChange={(event) => setRawQuery(event.target.value)}
               onKeyDown={(e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
                   e.preventDefault();
                   runQuery();
                 }
@@ -853,15 +858,15 @@ export default function QueryWorkbench({
               JSON
             </button>
             {resultRows.length > 0 && (
-    <button
-    type="button"
-    className="result-tab"
-    onClick={copyResults}
-    title="Copy results to clipboard"
-  >
-    {copied ? "✅ Copied!" : "📋 Copy"}
-  </button>
-)}
+              <button
+                type="button"
+                className="result-tab"
+                onClick={copyResults}
+                title="Copy results to clipboard"
+              >
+                {copied ? "✅ Copied!" : "📋 Copy"}
+              </button>
+            )}
           </div>
         </div>
 

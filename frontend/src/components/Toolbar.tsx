@@ -419,7 +419,11 @@ export default function Toolbar({
           onClick={onMaskToggle}
           type="button"
           aria-label="Toggle sensitive data masking"
-          title={maskSensitive ? "Show sensitive values" : "Hide sensitive values (password, token, secret)"}
+          title={
+            maskSensitive
+              ? "Show sensitive values"
+              : "Hide sensitive values (password, token, secret)"
+          }
           style={{
             height: 36,
             display: "flex",

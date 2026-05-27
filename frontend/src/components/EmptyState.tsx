@@ -10,10 +10,7 @@ export default function EmptyState({ children, onRetry }: EmptyStateProps) {
     <div className="empty-state">
       {children}
       {onRetry && (
-        <button
-          className="retry-btn"
-          onClick={onRetry}
-        >
+        <button className="retry-btn" onClick={onRetry}>
           🔄 Retry
         </button>
       )}
